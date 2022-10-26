@@ -59,27 +59,26 @@ function write_display(num) {
     currentDisplay.innerText = vCurrent;
 }
 
-function send_to_prev(operator) {
-    if (vPrevious != '' && vCurrent != '0') {
-        vPrevious = (operate(old_operator, Number(vPrevious), Number(vCurrent)));
-        prevDisplay.innerText = vPrevious;
-        vCurrent = 0;
-        currentDisplay.innerText = vCurrent;
-        return;
+var prevOp = ''
+function send_to_prev(operator){
+    if (operator == '=') {
+        vCurrent = operate(prevOp, Number(vPrevious), Number(vCurrent));
+        vPrevious = '';
     }
     else if (operator == 'c') {
         vCurrent = '0';
         vPrevious = '';
-        old_operator = '';
-        currentDisplay.innerText = '0';
-        prevDisplay.innerHTML = '';
-        return;
+    }
+    else if (vPrevious!= '' && vCurrent != '0') {
+        vPrevious = operate(prevOp, Number(vPrevious), Number(vCurrent));
+        prevOp = operator;
+        vCurrent = '0';
     }
     else {
-        old_operator = operator;
+        vPrevious = vCurrent;
+        vCurrent = 0;
+        prevOp = operator;
     }
-    vPrevious = vCurrent;
-    prevDisplay.innerText = vPrevious;
-    vCurrent = 0;
     currentDisplay.innerText = vCurrent;
+    prevDisplay.innerText = vPrevious;
 }
